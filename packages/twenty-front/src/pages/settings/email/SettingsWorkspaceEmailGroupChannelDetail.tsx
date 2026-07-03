@@ -47,6 +47,21 @@ const StyledForwardingInputContainer = styled.div`
   margin-right: ${themeCssVariables.spacing[2]};
 `;
 
+const StyledDomainStatusRow = styled.div`
+  align-items: center;
+  display: flex;
+  gap: ${themeCssVariables.spacing[2]};
+  justify-content: space-between;
+  padding: ${themeCssVariables.spacing[2]} ${themeCssVariables.spacing[3]};
+`;
+
+const StyledDomainName = styled.div`
+  color: ${themeCssVariables.font.color.secondary};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
 export const SettingsWorkspaceEmailGroupChannelDetail = () => {
   const { t } = useLingui();
   const navigateSettings = useNavigateSettings();
@@ -190,15 +205,20 @@ export const SettingsWorkspaceEmailGroupChannelDetail = () => {
                 />
               }
             />
-            <Status
-              color={getColorByEmailingDomainStatus(emailingDomain.status)}
-              text={getTextByEmailingDomainStatus(emailingDomain.status)}
-            />
             {isDefined(emailingDomain.verificationRecords) && (
               <SettingsDnsRecordsTable
                 records={emailingDomain.verificationRecords}
               />
             )}
+            <Card rounded>
+              <StyledDomainStatusRow>
+                <StyledDomainName>{emailingDomain.domain}</StyledDomainName>
+                <Status
+                  color={getColorByEmailingDomainStatus(emailingDomain.status)}
+                  text={getTextByEmailingDomainStatus(emailingDomain.status)}
+                />
+              </StyledDomainStatusRow>
+            </Card>
           </Section>
         )}
         <Section>
