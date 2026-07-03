@@ -9,6 +9,7 @@ import { capitalize, isDefined } from 'twenty-shared/utils';
 import { Status } from 'twenty-ui/data-display';
 import { type ThemeColor } from 'twenty-ui/theme';
 import { themeCssVariables } from 'twenty-ui/theme-constants';
+import { useCopyToClipboard } from '~/hooks/useCopyToClipboard';
 
 type DnsRecord = {
   type: string;
@@ -28,9 +29,26 @@ const StyledRecordTableRow = styled(TableRow)`
   margin-top: ${themeCssVariables.spacing[2]};
 `;
 
+const StyledCopyableCell = styled.div`
+  min-width: 0;
+  width: 100%;
+
+  & input {
+    cursor: pointer;
+    pointer-events: none;
+  }
+
+  &:hover input {
+    background-color: ${themeCssVariables.background.transparent.light};
+    border-color: ${themeCssVariables.border.color.strong};
+  }
+`;
+
 export const SettingsDnsRecordsTable = ({
   records,
 }: SettingsDnsRecordsTableProps) => {
+  const { copyToClipboard } = useCopyToClipboard();
+
   if (records.length === 0) {
     return null;
   }
@@ -71,31 +89,49 @@ export const SettingsDnsRecordsTable = ({
           gridAutoColumns={gridAutoColumns}
         >
           <TableCell>
-            <SettingsTextInput
-              instanceId={`dns-record-type-${index}`}
-              value={record.type}
-              sizeVariant="sm"
-              disabled
-              fullWidth
-            />
+            <StyledCopyableCell
+              onClick={() =>
+                copyToClipboard(record.type, t`Copied to clipboard`)
+              }
+            >
+              <SettingsTextInput
+                instanceId={`dns-record-type-${index}`}
+                value={record.type}
+                sizeVariant="sm"
+                disabled
+                fullWidth
+              />
+            </StyledCopyableCell>
           </TableCell>
           <TableCell>
-            <SettingsTextInput
-              instanceId={`dns-record-name-${index}`}
-              value={record.key}
-              sizeVariant="sm"
-              disabled
-              fullWidth
-            />
+            <StyledCopyableCell
+              onClick={() =>
+                copyToClipboard(record.key, t`Copied to clipboard`)
+              }
+            >
+              <SettingsTextInput
+                instanceId={`dns-record-name-${index}`}
+                value={record.key}
+                sizeVariant="sm"
+                disabled
+                fullWidth
+              />
+            </StyledCopyableCell>
           </TableCell>
           <TableCell>
-            <SettingsTextInput
-              instanceId={`dns-record-value-${index}`}
-              value={record.value}
-              sizeVariant="sm"
-              disabled
-              fullWidth
-            />
+            <StyledCopyableCell
+              onClick={() =>
+                copyToClipboard(record.value, t`Copied to clipboard`)
+              }
+            >
+              <SettingsTextInput
+                instanceId={`dns-record-value-${index}`}
+                value={record.value}
+                sizeVariant="sm"
+                disabled
+                fullWidth
+              />
+            </StyledCopyableCell>
           </TableCell>
           {hasPriorityColumn && (
             <TableCell align="center">{record.priority}</TableCell>
